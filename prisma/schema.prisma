@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-    provider = "sqlite"
+    provider = "mysql"
     // NOTE: When using postgresql, mysql or sqlserver, uncomment the @db.text annotations in model Account below
     // Further reading: 
     // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
@@ -51,6 +51,7 @@ model User {
     email         String?   @unique
     emailVerified DateTime?
     image         String?
+    password      String?
     accounts      Account[]
     sessions      Session[]
 }
@@ -61,4 +62,77 @@ model VerificationToken {
     expires    DateTime
 
     @@unique([identifier, token])
+}
+
+model Process {
+    id          String  @id
+    name        String
+    description String? @db.Text
+    risks       Risk[]
+}
+
+enum RiskType {
+    Strategic_Risk
+    Operational_Risk
+    Financial_Risk
+    Compliance_Risk
+    Reputational_Risk
+}
+
+model RiskRootCause {
+    id     String  @id
+    name   String
+    Risk   Risk?   @relation(fields: [riskId], references: [id])
+    riskId String?
+}
+
+model RiskPreEventMitigations {
+    id     String  @id
+    name   String
+    Risk   Risk?   @relation(fields: [riskId], references: [id])
+    riskId String?
+}
+
+model RiskPostEventMitigations {
+    id     String  @id
+    name   String
+    Risk   Risk?   @relation(fields: [riskId], references: [id])
+    riskId String?
+}
+
+model RiskConsequences {
+    id     String  @id
+    name   String
+    Risk   Risk?   @relation(fields: [riskId], references: [id])
+    riskId String?
+}
+
+model Risk {
+    id                       String                     @id
+    name                     String
+    description              String?                    @db.Text
+    processId                String
+    process                  Process                    @relation(fields: [processId], references: [id])
+    controls                 Control[]
+    riskType                 RiskType?
+    inherentRisk             Float?
+    residualRisk             Float?
+    riskVelocity             Int?
+    likelihood               Int?
+    impact                   Int?
+    riskAppetite             Int?
+    riskTolerance            Int?
+    rootCauses               RiskRootCause[]
+    RiskPreEventMitigations  RiskPreEventMitigations[]
+    RiskPostEventMitigations RiskPostEventMitigations[]
+    RiskConsequences         RiskConsequences[]
+    riskEvent                String?                    @db.Text
+}
+
+model Control {
+    id          String  @id
+    name        String
+    description String? @db.Text
+    riskId      String
+    risk        Risk    @relation(fields: [riskId], references: [id])
 }
