@@ -46,14 +46,15 @@ model Session {
 }
 
 model User {
-    id            String    @id @default(cuid())
+    id            String     @id @default(cuid())
     name          String?
-    email         String?   @unique
+    email         String?    @unique
     emailVerified DateTime?
     image         String?
     password      String?
     accounts      Account[]
     sessions      Session[]
+    UserRole      UserRole[]
 }
 
 model VerificationToken {
@@ -107,6 +108,13 @@ model RiskConsequences {
     riskId String?
 }
 
+model RiskCategory {
+    id     String  @id
+    name   String
+    Risk   Risk?   @relation(fields: [riskId], references: [id])
+    riskId String?
+}
+
 model Risk {
     id                       String                     @id
     name                     String
@@ -127,6 +135,95 @@ model Risk {
     RiskPostEventMitigations RiskPostEventMitigations[]
     RiskConsequences         RiskConsequences[]
     riskEvent                String?                    @db.Text
+    categories               RiskCategory[]
+}
+
+model CosoComponents {
+    id          String  @id
+    name        String
+    description String? @db.Text
+    Coso        Coso[]
+}
+
+model CosoPrinciples {
+    id          String  @id
+    name        String
+    description String? @db.Text
+    Coso        Coso[]
+}
+
+model Coso {
+    id          String         @id
+    name        String
+    component   CosoComponents @relation(fields: [componentId], references: [id])
+    componentId String
+    principle   CosoPrinciples @relation(fields: [principleId], references: [id])
+    principleId String
+    Control     Control[]
+}
+
+model CobitDomain {
+    id    String  @id
+    name  String
+    Cobit Cobit[]
+}
+
+model CobitProcess {
+    id    String  @id
+    name  String
+    Cobit Cobit[]
+}
+
+model RACIResponsibility {
+    id   String @id
+    name String
+    RACI RACI[]
+}
+
+model RACIAccountability {
+    id   String @id
+    name String
+    RACI RACI[]
+}
+
+model RACIConsultation {
+    id   String @id
+    name String
+    RACI RACI[]
+}
+
+model RACIInformed {
+    id   String @id
+    name String
+    RACI RACI[]
+}
+
+model Cobit {
+    id             String       @id
+    name           String
+    domain         CobitDomain  @relation(fields: [cobitDomainId], references: [id])
+    processes      CobitProcess @relation(fields: [cobitProcessId], references: [id])
+    cobitDomainId  String
+    cobitProcessId String
+    Control        Control[]
+
+    @@unique([cobitDomainId, cobitProcessId])
+}
+
+model RACI {
+    id               String             @id
+    name             String
+    responsibility   RACIResponsibility @relation(fields: [responsibilityId], references: [id])
+    accountability   RACIAccountability @relation(fields: [accountabilityId], references: [id])
+    consultation     RACIConsultation   @relation(fields: [consultationId], references: [id])
+    informed         RACIInformed       @relation(fields: [informedId], references: [id])
+    responsibilityId String
+    accountabilityId String
+    consultationId   String
+    informedId       String
+    Control          Control[]
+
+    @@unique([responsibilityId, accountabilityId, consultationId, informedId])
 }
 
 model Control {
@@ -134,5 +231,44 @@ model Control {
     name        String
     description String? @db.Text
     riskId      String
+    cosoId      String?
+    cobitId     String?
+    raciId      String?
     risk        Risk    @relation(fields: [riskId], references: [id])
+    coso        Coso?   @relation(fields: [cosoId], references: [id])
+    cobit       Cobit?  @relation(fields: [cobitId], references: [id])
+    raci        RACI?   @relation(fields: [raciId], references: [id])
+}
+
+model Role {
+    id             String           @id
+    name           String
+    description    String?
+    RolePermission RolePermission[]
+    UserRole       UserRole[]
+}
+
+model Permission {
+    id             String           @id
+    name           String           @unique
+    model          String
+    RolePermission RolePermission[]
+}
+
+model RolePermission {
+    id           String     @id
+    roleId       String
+    permissionId String
+    role         Role       @relation(fields: [roleId], references: [id])
+    permission   Permission @relation(fields: [permissionId], references: [id])
+}
+
+model UserRole {
+    id     String @id
+    userId String
+    roleId String
+    user   User   @relation(fields: [userId], references: [id])
+    role   Role   @relation(fields: [roleId], references: [id])
+
+    @@unique([userId, roleId])
 }
