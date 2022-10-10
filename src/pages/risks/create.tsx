@@ -4,7 +4,7 @@ import { trpc } from "../../utils/trpc";
 import Head from "next/head";
 import { useForm } from "react-hook-form";
 import { CreateRiskInput } from "../../validation/risks";
-import {  useState } from "react";
+import { useState } from "react";
 import { ErrorMessage } from '@hookform/error-message';
 
 const CreateRiskPage: NextPage = () => {
@@ -13,6 +13,7 @@ const CreateRiskPage: NextPage = () => {
     const [showErrors, setShowErrors] = useState<boolean>(false);
     const { data: functions } = trpc.useQuery(["processes.getAll"]);
     const { mutateAsync } = trpc.useMutation(["risks.createRisk"]);
+    const [categories, setCategories] = useState<string>();
 
     const onSubmit = async (data: CreateRiskInput): Promise<void> => {
         setShowErrors(false);
@@ -23,6 +24,10 @@ const CreateRiskPage: NextPage = () => {
         } finally {
             setIsSending(false);
         }
+    }
+
+    const handleCategories = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setCategories(e.target.value);
     }
     return (
         <Layout>
@@ -72,7 +77,7 @@ const CreateRiskPage: NextPage = () => {
                         </div>
                         <div className="flex flex-col gap-1 py-2">
                             <label htmlFor="processId" className="text-lg">Function</label>
-                            <select {...register("processId" ,{required:"You must select a function"})} id="processId">
+                            <select {...register("processId", { required: "You must select a function" })} id="processId">
                                 {
                                     functions && functions.map(fun => {
                                         return (
@@ -149,7 +154,7 @@ const CreateRiskPage: NextPage = () => {
                         <h1 className="text-2xl font-bold pb-3 border-b">Risk Assessment</h1>
                         <div className="flex flex-col gap-1 py-2">
                             <label htmlFor="inherentRisk" className="text-lg">Inherent Risk</label>
-                            <input type="text" {...register("inherentRisk",{required:"Please enter an inherent risk value"})} id="inherentRisk" />
+                            <input type="text" {...register("inherentRisk", { required: "Please enter an inherent risk value" })} id="inherentRisk" />
                             <ErrorMessage
                                 errors={showErrors ? errors : {}}
                                 name="inherentRisk"
@@ -158,7 +163,7 @@ const CreateRiskPage: NextPage = () => {
                         </div>
                         <div className="flex flex-col gap-1 py-2">
                             <label htmlFor="residualRisk" className="text-lg">Residual Risk</label>
-                            <input type="text" {...register("residualRisk",{required:"Please enter a residual risk value"})} id="residualRisk" />
+                            <input type="text" {...register("residualRisk", { required: "Please enter a residual risk value" })} id="residualRisk" />
                             <ErrorMessage
                                 errors={showErrors ? errors : {}}
                                 name="residualRisk"
@@ -185,6 +190,40 @@ const CreateRiskPage: NextPage = () => {
                                 name="riskTolerance"
                                 render={({ message }) => <p className="text-red-500">{message}</p>}
                             />
+                        </div>
+                    </div>
+                    <div className="card p-3 w-full">
+                        <h1 className="text-2xl font-bold pb-3 border-b"></h1>
+                        <div className="flex flex-col gap-1 py-2">
+                            <label htmlFor="riskAppetite" className="text-lg">Risk Owner</label>
+                            <input type="text" />
+                        </div>
+                        <div className="flex flex-col gap-1 py-2">
+                            <label htmlFor="riskAppetite" className="text-lg">Department</label>
+                            <input type="text" />
+                        </div>
+                        <div className="flex flex-col gap-1 py-2">
+                            <label htmlFor="riskAppetite" className="text-lg">Line of defense</label>
+                            <select name="" id="">
+                                <option value="1">Line of defense 1</option>
+                                <option value="1">Line of defense 2</option>
+                                <option value="1">Line of defense 3</option>
+                                <option value="1">Board of directors</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div className="card p-3 w-full">
+                        <h1 className="text-2xl font-bold pb-3 border-b">Categories</h1>
+                        <div className="flex flex-col gap-1 py-2">
+                            <label className="text-lg">Categories (Comma seperated)</label>
+                            <input type="text" onInput={handleCategories} />
+                        </div>
+                        <div className="flex gap-2">
+                            {categories && categories.length > 0 && categories.split(',').map(cat => {
+                                if (cat.trim() !== '') {
+                                    return <div className="bg-indigo-500 text-white px-2 rounded-full py-1 font-semibold">{cat}</div>
+                                }
+                            })}
                         </div>
                     </div>
                 </div>
