@@ -8,11 +8,28 @@ import type { AppType } from "next/app";
 import type { AppRouter } from "../server/router";
 import type { Session } from "next-auth";
 import "../styles/globals.css";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import useTabsStore from "../utils/tabsHook";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
+  const router = useRouter();
+  const getTabs = useTabsStore((state) => state.tabs);
+  const setActiveTab = useTabsStore((state) => state.setActiveTab);
+  const getActiveTab = useTabsStore((state) => state.activeTab);
+  useEffect(() => {
+    if (getTabs && getTabs.length > 0) {
+      getTabs.map((tab) => {
+        if (tab.href == router.asPath) {
+          setActiveTab(tab);
+        }
+      });
+    }
+    console.log(router.asPath);
+  }, [router.asPath]);
   return (
     <SessionProvider session={session}>
       <Component {...pageProps} />

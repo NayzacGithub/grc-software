@@ -6,6 +6,7 @@ import ShowRiskDialog from "../../components/modals/ShowRiskDialog";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import useTabsStore from "../../utils/tabsHook";
 
 const RisksIndex: NextPage = () => {
     const router = useRouter();
@@ -14,9 +15,11 @@ const RisksIndex: NextPage = () => {
         functionId: functionId as string
     }]);
     const [selectedRiskId, setSelectedRiskId] = useState<string | undefined>();
-    const handleShowRiskmModal = (riskId: string) => {
-        setSelectedRiskId(riskId);
-    }
+
+
+    const addTab = useTabsStore(state => state.addTab);
+    const setActiveTab = useTabsStore(state => state.setActiveTab);
+
 
 
 
@@ -51,16 +54,6 @@ const RisksIndex: NextPage = () => {
                         <summary className="hover:bg-gray-200 px-4 transition-colors cursor-pointer select-none">System Defined
                             Filters
                         </summary>
-                        {/* <ul className="px-2">
-                            <li className="flex gap-2 px-2 py-0.5 cursor-pointer"><span><label><input type="checkbox" name=""
-                                id=""><span>Function</span></label></span></li>
-                            <li className="flex gap-2 px-2 py-0.5 cursor-pointer"><span><label><input type="checkbox" name=""
-                                id=""><span>Function Description</span></label></span></li>
-                            <li className="flex gap-2 px-2 py-0.5 cursor-pointer"><span><label><input type="checkbox" name=""
-                                id=""><span>Risk ID</span></label></span></li>
-                            <li className="flex gap-2 px-2 py-0.5 cursor-pointer"><span><label><input type="checkbox" name=""
-                                id=""><span>Risk Description</span></label></span></li>
-                        </ul> */}
                     </details>
                 </div>
                 <div className="rounded-xl overflow-clip w-full">
@@ -68,7 +61,7 @@ const RisksIndex: NextPage = () => {
                         <table className="min-w-max w-full bg-white">
                             <thead className="bg-white">
                                 <tr>
-                                    <th className="font-normal bg-white border-b-2 px-2 py-1 text-left sticky top-0" colSpan={2}>Processess</th>
+                                    <th className="font-normal bg-white border-b-2 px-2 py-1 text-left sticky top-0" colSpan={2}>Functions</th>
                                     <th className="font-normal bg-white border-b-2 px-2 py-1 text-left border-l sticky top-0" colSpan={2}>Risks</th>
                                 </tr>
                                 <tr className="">
@@ -81,9 +74,9 @@ const RisksIndex: NextPage = () => {
                             <tbody>
                                 {data && data.map(row => {
                                     return (
-                                        <tr className="hover:bg-gray-100 cursor-pointer" onClick={() => handleShowRiskmModal(row.id)} key={row.id}>
-                                            <th className="border-b max-h-10 truncate py-1 px-2 sticky left-0 bg-gray-50 border-r-2"><span>{row.process?.id}</span></th>
-                                            <td className="border-b max-h-10 truncate py-1 px-2"><span>{row.process?.name}</span></td>
+                                        <tr className="hover:bg-gray-100 cursor-pointer" key={row.id}>
+                                            <th className="border-b max-h-10 truncate py-1 px-2 sticky left-0 bg-gray-50 border-r-2"><span>{row.FunctionRisk[0]?.function_id}</span></th>
+                                            <td className="border-b max-h-10 truncate py-1 px-2"><span>{row.FunctionRisk[0]?.function.name}</span></td>
                                             <td className="border-b max-h-10 truncate py-1 px-2"><span>{row.id}</span></td>
                                             <td className="border-b max-h-10 truncate py-1 px-2">
                                                 <span>

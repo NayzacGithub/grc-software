@@ -10,6 +10,8 @@ const Home: NextPage = () => {
     </Head>
     <Layout>
       <OrganizationWelcome />
+      {/* Display a few tables */}
+
     </Layout>
   </>
 

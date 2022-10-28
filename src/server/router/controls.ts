@@ -1,18 +1,23 @@
+import { z } from "zod";
 import { controlGetAllFilterSchema } from "../../validation/controls";
 import { createRouter } from "./context";
 // import { registerSchema } from "../../validation/auth";
 
 export const controlsRouter = createRouter()
-    .query("getAll", {
-        input: controlGetAllFilterSchema,
+    .query("getControl", {
+        input: z.object({ controlId: z.string() }),
         async resolve({ ctx, input }) {
-            return await ctx.prisma.control.findMany({
+            return await ctx.prisma.control.findUnique({
                 where: {
-                    riskId: input.riskId as string
+                    id: input.controlId
                 },
                 include: {
-                    risk: true,
-                }
-            });
+                    RiskControl: {
+                        include: {
+                            risk: true
+                        }
+                    }
+                },
+            })
         }
     });

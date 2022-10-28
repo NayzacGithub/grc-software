@@ -4,11 +4,13 @@ import z from "zod";
 export const processesRouter = createRouter()
     .query("getAll", {
         async resolve({ ctx }) {
-            return await ctx.prisma.process.findMany({
+            return await ctx.prisma.function.findMany({
                 include: {
                     _count: {
-                        select: {
-                            risks: true,
+                    },
+                    FunctionRisk: {
+                        include: {
+                            risk: true
                         }
                     }
                 }

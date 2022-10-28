@@ -8,16 +8,17 @@ export const risksRouter = createRouter()
         input: riskGetAllFilterSchema,
         async resolve({ ctx, input }) {
             return await ctx.prisma.risk.findMany({
-                where: {
-                    processId: input.functionId as string
-                },
                 include: {
-                    process: true,
+                    FunctionRisk: {
+                        include:{
+                            function: true,
+                        }
+                    },
                 }
             });
         }
     })
-    .query("modalDetails", {
+    .query("getRisk", {
         input: z.object({ riskId: z.string() }),
         async resolve({ ctx, input }) {
             return await ctx.prisma.risk.findUnique({
@@ -25,38 +26,17 @@ export const risksRouter = createRouter()
                     id: input.riskId,
                 },
                 include: {
-                    process: true,
-                    _count: {
-                        select: {
-                            controls: true,
+                    RiskControl: {
+                        include: {
+                            control: true
+                        }
+                    },
+                    FunctionRisk: {
+                        include: {
+                            function: true
                         }
                     }
                 }
-            });
-        }
-    })
-    .mutation("createRisk", {
-        input: createRiskInputSchema,
-        async resolve({ ctx, input }) {
-            return await ctx.prisma.risk.create({
-                data: {
-                    id: input.id,
-                    name: input.name,
-                    description: input.description,
-                    riskType: input.riskType,
-                    inherentRisk: parseFloat(input.inherentRisk),
-                    residualRisk: parseFloat(input.residualRisk),
-                    riskVelocity: parseInt(input.riskVelocity),
-                    likelihood: parseInt(input.likelihood),
-                    impact: parseInt(input.impact),
-                    riskAppetite: parseInt(input.riskAppetite),
-                    riskTolerance: parseInt(input.riskTolerance),
-                    process: {
-                        connect: {
-                            id: input.processId,
-                        }
-                    }
-                },
             });
         }
     });
