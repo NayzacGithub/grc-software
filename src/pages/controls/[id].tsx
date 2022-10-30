@@ -1,11 +1,8 @@
 import { useRouter } from "next/router";
-import Layout from "../../components/Layout";
 import { trpc } from "../../utils/trpc";
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import ActionsLayout from "../../components/ActionsLayout";
-import useTabsStore from "../../utils/tabsHook";
-import { useMemo } from "react";
 
 const ActionButton = () => {
     return <DropdownMenu.Root>
@@ -19,12 +16,6 @@ const RiskPage = () => {
     const router = useRouter();
     const { id } = router.query;
     const { data: control, isLoading, status } = trpc.useQuery(['controls.getControl', { controlId: id as string }]);
-    const addTab = useTabsStore(state => state.addTab);
-    const setActiveTab = useTabsStore(state => state.setActiveTab);
-    
-
-
-
 
     if (isLoading) {
         return <div>Loading...</div>
@@ -88,23 +79,7 @@ const RiskPage = () => {
                             </div>
                         </div>
                     </details>
-                    {/* <details open className=" border-t-2 pb-5">
-                        <summary className="text-2xl font-bold ">Control Assessment</summary>
-                        <div className="flex justify-between  pt-4">
-                            <div className="flex flex-col gap-1">
-                                <span className="font-bold">Associated Losses</span>
-                                <span className="bg-green-700 text-white rounded-full px-4 pb-1 max-w-fit">{0}</span>
-                            </div>
-                            <div className="flex flex-col gap-1">
-                                <span className="font-bold">Open Issues</span>
-                                <span className="bg-green-700 text-white rounded-full px-4 pb-1 max-w-fit">{0}</span>
-                            </div>
-                            <div className="flex flex-col gap-1">
-                                <span className="font-bold">Indicators in breach</span>
-                                <span className="bg-green-700 text-white rounded-full px-4 pb-1 max-w-fit">{0}</span>
-                            </div>
-                        </div>
-                    </details> */}
+
                     <details open className=" border-t-2 pb-5">
                         <summary className="text-2xl font-bold ">Control Assessment</summary>
                         <div className="flex justify-around pt-4">

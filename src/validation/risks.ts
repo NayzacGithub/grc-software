@@ -36,3 +36,12 @@ export const riskGetAllFilterSchema = z.object({
 });
 
 export type RiskGetAllFilterSchema = z.TypeOf<typeof riskGetAllFilterSchema>;
+
+
+export const riskAnalysisInputSchema = z.object({
+    risk_id: z.string(),
+    inherentImpact: z.string(),
+    inherentLikelyhood: z.string(),
+});
+
+export type RiskAnalysisInput = z.TypeOf<typeof riskAnalysisInputSchema>;

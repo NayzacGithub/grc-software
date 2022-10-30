@@ -10,7 +10,7 @@ const Home: NextPage = () => {
     </Head>
     <Layout>
       <OrganizationWelcome />
-      {/* Display a few tables */}
+      <img src="/images/dashboard.png" alt="bank" />
 
     </Layout>
   </>

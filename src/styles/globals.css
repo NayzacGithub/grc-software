@@ -21,7 +21,7 @@
 }
 
 .radix-tab-active {
-    @apply bg-white p-4 border-x border-gray-300 font-bold border-t-4 border-t-blue-400;
+    @apply bg-white p-4 border-x border-gray-300 border-t-4 border-t-blue-400;
 }
 body{
     background: #eef0f4;

@@ -1,9 +1,4 @@
-// import React from 'react';
-import { HomeIcon } from '@heroicons/react/24/outline';
-import { useRouter } from 'next/router';
-import React, { ReactNode, SVGProps } from 'react';
 import create from 'zustand';
-// import TabItem from '../components/TabItem';
 
 export interface Tab {
     id: string;
@@ -19,6 +14,7 @@ export interface TabState {
     addTab: (tab: Tab) => void;
     removeTab: (tab: Tab) => void;
     hasTab: (tab: Tab, tabs: Tab[]) => boolean;
+
 }
 
 const homeTab: Tab = {
@@ -31,25 +27,22 @@ const homeTab: Tab = {
 const useTabsStore = create<TabState>((set) => ({
     tabs: [homeTab],
     activeTab: undefined,
-    setActiveTab: (tab: Tab) => { set({ activeTab: tab }); },
-    addTab: (tab: Tab) => set((state) => ({ tabs: [...state.tabs, tab] })),
-    removeTab: (tab: Tab) => set((state) => ({ tabs: state.tabs.filter((t) => t.id !== tab.id) })),
+    setActiveTab: (tab: Tab) => {
+        set({ activeTab: tab });
+    },
+    addTab: (tab: Tab) => {
+        if(!useTabsStore.getState().hasTab(tab, useTabsStore.getState().tabs)) {
+            set((state) => ({ tabs: [...state.tabs, tab] }))
+        }
+        return;
+    },
+    removeTab: (tab: Tab) => {
+        set((state) => ({ tabs: state.tabs.filter((t) => t.id !== tab.id) }))
+    },
     hasTab: (tab: Tab, tabs: Tab[]) => {
         const tabIds = tabs.map((t) => t.id);
         return tabIds.includes(tab.id);
-    }
+    },
 }));
-
-// export const useNavigateTo = (tab: Tab) => {
-//     const { setActiveTab, addTab, hasTab, tabs } = useTabsStore();
-//     const router = useRouter();
-//     return (tab: Tab) => {
-//         if (!hasTab(tab, tabs)) {
-//             addTab(tab);
-//         }
-//         setActiveTab(tab);
-//         router.push(tab.href);        
-//     };
-// }
 
 export default useTabsStore;

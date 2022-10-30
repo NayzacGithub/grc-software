@@ -71,13 +71,16 @@ model Function {
 }
 
 model Risk {
-    id           String         @id
-    name         String
-    description  String?        @db.Text
-    event_type   String
-    owner        String
-    FunctionRisk FunctionRisk[]
-    RiskControl  RiskControl[]
+    id                 String         @id
+    name               String
+    description        String?        @db.Text
+    event_type         String?
+    owner              String?
+    riskType           RiskType?
+    FunctionRisk       FunctionRisk[]
+    RiskControl        RiskControl[]
+    inherentImpact     Int?
+    inherentLikelyhood Int?
 
     @@index([name], name: "name")
 }
@@ -174,195 +177,13 @@ model CosoFocusPoints {
     principle    CosoPrinciples @relation(fields: [principle_id], references: [id], onDelete: Cascade)
 }
 
-// enum RiskType {
-//     Strategic_Risk
-//     Operational_Risk
-//     Financial_Risk
-//     Compliance_Risk
-//     Reputational_Risk
-// }
-
-// model RiskRootCause {
-//     id     String  @id
-//     name   String
-//     Risk   Risk?   @relation(fields: [riskId], references: [id])
-//     riskId String?
-// }
-
-// model RiskPreEventMitigations {
-//     id     String  @id
-//     name   String
-//     Risk   Risk?   @relation(fields: [riskId], references: [id])
-//     riskId String?
-// }
-
-// model RiskPostEventMitigations {
-//     id     String  @id
-//     name   String
-//     Risk   Risk?   @relation(fields: [riskId], references: [id])
-//     riskId String?
-// }
-
-// model RiskConsequences {
-//     id     String  @id
-//     name   String
-//     Risk   Risk?   @relation(fields: [riskId], references: [id])
-//     riskId String?
-// }
-
-// model RiskCategory {
-//     id     String  @id
-//     name   String
-//     Risk   Risk?   @relation(fields: [riskId], references: [id])
-//     riskId String?
-// }
-
-// model Risk {
-//     id                       String                     @id
-//     name                     String
-//     description              String?                    @db.Text
-//     processId                String
-//     process                  Process                    @relation(fields: [processId], references: [id])
-//     controls                 Control[]
-//     riskType                 RiskType?
-//     riskAppetite             Int?
-//     riskTolerance            Int?
-//     rootCauses               RiskRootCause[]
-//     RiskPreEventMitigations  RiskPreEventMitigations[]
-//     RiskPostEventMitigations RiskPostEventMitigations[]
-//     RiskConsequences         RiskConsequences[]
-//     riskEvent                String?                    @db.Text
-//     categories               RiskCategory[]
-//     inherentAssessment       InherentRiskAssessment?    @relation(fields: [inherentAssessmentId], references: [id])
-//     inherentAssessmentId     String?
-//     residualAssessment       ResidualRiskAssessment?    @relation(fields: [residualAssessmentId], references: [id])
-//     residualAssessmentId     String?
-// }
-
-// model InherentRiskAssessment {
-//     id          String   @id
-//     name        String
-//     description String?  @db.Text
-//     impact      Int?
-//     likelihood  Int?
-//     created_at  DateTime @default(now())
-//     Risk        Risk[]
-// }
-
-// model ResidualRiskAssessment {
-//     id          String   @id
-//     name        String
-//     description String?  @db.Text
-//     impact      Int?
-//     likelihood  Int?
-//     created_at  DateTime @default(now())
-//     Risk        Risk[]
-// }
-
-// model CosoComponents {
-//     id          String  @id
-//     name        String
-//     description String? @db.Text
-//     Coso        Coso[]
-// }
-
-// model CosoPrinciples {
-//     id          String  @id
-//     name        String
-//     description String? @db.Text
-//     Coso        Coso[]
-// }
-
-// model CosoFocusPoints {
-//     id   String @id
-//     name String
-
-//     Coso   Coso?   @relation(fields: [cosoId], references: [id])
-//     cosoId String?
-// }
-
-// model Coso {
-//     id              String            @id
-//     name            String
-//     component       CosoComponents    @relation(fields: [componentId], references: [id])
-//     componentId     String
-//     principle       CosoPrinciples    @relation(fields: [principleId], references: [id])
-//     principleId     String
-//     Control         Control[]
-//     CosoFocusPoints CosoFocusPoints[]
-// }
-
-// model CobitProcess {
-//     id    String  @id
-//     name  String
-//     Cobit Cobit[]
-// }
-
-// model RACIResponsibility {
-//     id   String @id
-//     name String
-//     RACI RACI[]
-// }
-
-// model RACIAccountability {
-//     id   String @id
-//     name String
-//     RACI RACI[]
-// }
-
-// model RACIConsultation {
-//     id   String @id
-//     name String
-//     RACI RACI[]
-// }
-
-// model RACIInformed {
-//     id   String @id
-//     name String
-//     RACI RACI[]
-// }
-
-// model Cobit {
-//     id             String       @id
-//     name           String
-//     domain         CobitDomain  @relation(fields: [cobitDomainId], references: [id])
-//     processes      CobitProcess @relation(fields: [cobitProcessId], references: [id])
-//     cobitDomainId  String
-//     cobitProcessId String
-//     Control        Control[]
-
-//     @@unique([cobitDomainId, cobitProcessId])
-// }
-
-// model RACI {
-//     id               String             @id
-//     name             String
-//     responsibility   RACIResponsibility @relation(fields: [responsibilityId], references: [id])
-//     accountability   RACIAccountability @relation(fields: [accountabilityId], references: [id])
-//     consultation     RACIConsultation   @relation(fields: [consultationId], references: [id])
-//     informed         RACIInformed       @relation(fields: [informedId], references: [id])
-//     responsibilityId String
-//     accountabilityId String
-//     consultationId   String
-//     informedId       String
-//     Control          Control[]
-
-//     @@unique([responsibilityId, accountabilityId, consultationId, informedId])
-// }
-
-// model Control {
-//     id          String  @id
-//     name        String
-//     description String? @db.Text
-//     riskId      String
-//     cosoId      String?
-//     cobitId     String?
-//     raciId      String?
-//     risk        Risk    @relation(fields: [riskId], references: [id])
-//     coso        Coso?   @relation(fields: [cosoId], references: [id])
-//     cobit       Cobit?  @relation(fields: [cobitId], references: [id])
-//     raci        RACI?   @relation(fields: [raciId], references: [id])
-// }
+enum RiskType {
+    Strategic_Risk
+    Operational_Risk
+    Financial_Risk
+    Compliance_Risk
+    Reputational_Risk
+}
 
 model Role {
     id             String           @id

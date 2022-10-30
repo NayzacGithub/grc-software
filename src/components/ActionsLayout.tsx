@@ -1,3 +1,4 @@
+import clsx from "clsx"
 import { PropsWithChildren } from "react"
 import Layout from "./Layout"
 
@@ -22,11 +23,11 @@ ActionsLayout.Side = ({ children }: PropsWithChildren) => {
 }
 
 ActionsLayout.Section = ({ children }: PropsWithChildren) => {
-    return <section className="grow  bg-white p-5 rounded-lg shadow-xl">{children}</section>
+    return <section className="grow  bg-white rounded-lg shadow-xl">{children}</section>
 }
 
 ActionsLayout.Main = ({ children }: PropsWithChildren) => {
-    return <main className="flex p-5 gap-8 grow">{children}</main>
+    return <main className={clsx("flex p-5 gap-8 grow")}>{children}</main>
 }
 
 export default ActionsLayout
