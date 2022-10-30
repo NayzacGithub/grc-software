@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import create from 'zustand';
 
 export interface Tab {
@@ -31,13 +32,17 @@ const useTabsStore = create<TabState>((set) => ({
         set({ activeTab: tab });
     },
     addTab: (tab: Tab) => {
-        if(!useTabsStore.getState().hasTab(tab, useTabsStore.getState().tabs)) {
+        if (!useTabsStore.getState().hasTab(tab, useTabsStore.getState().tabs)) {
             set((state) => ({ tabs: [...state.tabs, tab] }))
         }
         return;
     },
     removeTab: (tab: Tab) => {
+        const index = useTabsStore.getState().tabs.findIndex((t) => t.href === tab.href);
         set((state) => ({ tabs: state.tabs.filter((t) => t.id !== tab.id) }))
+        if (index > 0) {
+            set({ activeTab: useTabsStore.getState().tabs[index - 1] });
+        }
     },
     hasTab: (tab: Tab, tabs: Tab[]) => {
         const tabIds = tabs.map((t) => t.id);
