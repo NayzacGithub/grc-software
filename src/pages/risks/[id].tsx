@@ -1,8 +1,7 @@
 import { useRouter } from "next/router";
 import { trpc } from "../../utils/trpc";
-import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
-import ActionsLayout from "../../components/ActionsLayout";
+import ActionsLayout, {ActionsLayoutHeader, ActionsLayoutMain, ActionsLayoutSection, ActionsLayoutSide} from "../../components/ActionsLayout";
 import Link from "next/link";
 
 const ActionButton = () => {
@@ -24,7 +23,7 @@ const RiskPage = () => {
 
     return (
         <ActionsLayout>
-            <ActionsLayout.Header>
+            <ActionsLayoutHeader>
                 <div className="flex flex-col ">
                     <span className="text-sm">Risk</span>
                     <h1 className="text-2xl">
@@ -46,9 +45,9 @@ const RiskPage = () => {
                     </div>
                 </div>
                 <ActionButton />
-            </ActionsLayout.Header>
-            <ActionsLayout.Main>
-                <ActionsLayout.Section>
+            </ActionsLayoutHeader>
+            <ActionsLayoutMain>
+                <ActionsLayoutSection>
                     <div className="p-5">
                         <details open className=" pb-5">
                             <summary className="text-2xl font-bold">General</summary>
@@ -73,16 +72,16 @@ const RiskPage = () => {
                         </details>
                         <details open className=" border-t-2 pb-5">
                             <summary className="text-2xl font-bold ">Reassessment Triggers</summary>
-                            <div className="flex justify-between  pt-4">
-                                <div className="flex flex-col gap-1">
+                            <div className="flex justify-around  pt-4">
+                                <div className="flex flex-col gap-1 items-center">
                                     <span className="font-bold">Associated Losses</span>
                                     <span className="bg-green-700 text-white rounded-full px-4 pb-1 max-w-fit">{0}</span>
                                 </div>
-                                <div className="flex flex-col gap-1">
+                                <div className="flex flex-col gap-1 items-center">
                                     <span className="font-bold">Open Issues</span>
                                     <span className="bg-green-700 text-white rounded-full px-4 pb-1 max-w-fit">{0}</span>
                                 </div>
-                                <div className="flex flex-col gap-1">
+                                <div className="flex flex-col gap-1 items-center">
                                     <span className="font-bold">Indicators in breach</span>
                                     <span className="bg-green-700 text-white rounded-full px-4 pb-1 max-w-fit">{0}</span>
                                 </div>
@@ -90,16 +89,16 @@ const RiskPage = () => {
                         </details>
                         <details open className=" border-t-2 pb-5">
                             <summary className="text-2xl font-bold ">Inherent Risk Assessment</summary>
-                            <div className="flex justify-between pt-4">
-                                <div className="flex flex-col gap-1">
+                            <div className="flex justify-around pt-4">
+                                <div className="flex flex-col gap-1 items-center">
                                     <span className="font-bold">Inherent Impact</span>
                                     <span className="bg-green-700 text-white rounded-full px-4 pb-1 max-w-fit">{`Low`}</span>
                                 </div>
-                                <div className="flex flex-col gap-1">
+                                <div className="flex flex-col gap-1 items-center">
                                     <span className="font-bold">Likelihood Impact</span>
                                     <span className="bg-green-700 text-white rounded-full px-4 pb-1 max-w-fit">{`Low`}</span>
                                 </div>
-                                <div className="flex flex-col gap-1">
+                                <div className="flex flex-col gap-1 items-center">
                                     <span className="font-bold">Inherent Risk Rating</span>
                                     <span className="bg-green-700 text-white rounded-full px-4 pb-1 max-w-fit">{`Low`}</span>
                                 </div>
@@ -156,8 +155,8 @@ const RiskPage = () => {
                             </div>
                         </details>
                     </div>
-                </ActionsLayout.Section>
-                <ActionsLayout.Side>
+                </ActionsLayoutSection>
+                <ActionsLayoutSide>
                     <div className="card py-3 px-5 flex flex-col gap-2">
                         <div className="grid grid-cols-3">
                             <h3 className="font-semibold">
@@ -179,8 +178,8 @@ const RiskPage = () => {
                             <li className=" list-item">The risk should be assessed in the context of the organisation’s risk appetite and tolerance;</li>
                         </ul>
                     </div>
-                </ActionsLayout.Side>
-            </ActionsLayout.Main>
+                </ActionsLayoutSide>
+            </ActionsLayoutMain>
         </ActionsLayout>
     );
 }

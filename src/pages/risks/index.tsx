@@ -2,8 +2,9 @@ import { NextPage } from "next";
 import { trpc } from "../../utils/trpc";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import ActionsLayout from "../../components/ActionsLayout";
+import ActionsLayout, {ActionsLayoutHeader, ActionsLayoutMain, ActionsLayoutSection, ActionsLayoutSide} from "../../components/ActionsLayout";
 import Link from "next/link";
+import { useRiskNavigation } from "../../utils/navHook";
 
 const RisksIndex: NextPage = () => {
     const router = useRouter();
@@ -11,19 +12,20 @@ const RisksIndex: NextPage = () => {
     const { data } = trpc.useQuery(["risks.getAll", {
         functionId: functionId as string
     }]);
+    const { navigateTo } = useRiskNavigation();
     return (
         <ActionsLayout>
             <Head>
                 <title>Risks Catalog | Pi-Comply</title>
             </Head>
-            <ActionsLayout.Header>
+            <ActionsLayoutHeader>
                 <h1 className="text-2xl font-bold text-gray-700 my-auto">Risks Catalog</h1>
                 <Link href={`/risks/create`} className={"my-auto"}>
                     <a className="bg-blue-500 text-white px-4 py-2 rounded-lg my-auto">Create Risk</a>
                 </Link>
-            </ActionsLayout.Header>
-            <ActionsLayout.Main>
-                <ActionsLayout.Section>
+            </ActionsLayoutHeader>
+            <ActionsLayoutMain>
+                <ActionsLayoutSection>
                     <table className="min-w-max w-full bg-white">
                         <thead className="bg-white">
                             <tr>
@@ -40,30 +42,28 @@ const RisksIndex: NextPage = () => {
                         <tbody>
                             {data && data.map(row => {
                                 return (
-                                    <Link href={`/risks/${row.id}`} key={row.id}>
-                                        <tr className="hover:bg-gray-100 cursor-pointer">
-                                            <th className="border-b max-h-10 truncate py-1 px-2 sticky left-0 bg-gray-50 border-r-2"><span>{row.FunctionRisk[0]?.function_id}</span></th>
-                                            <td className="border-b max-h-10 truncate py-1 px-2"><span>{row.FunctionRisk[0]?.function.name}</span></td>
-                                            <td className="border-b max-h-10 truncate py-1 px-2"><span>{row.id}</span></td>
-                                            <td className="border-b max-h-10 truncate py-1 px-2">
-                                                <span>
-                                                    {row.description && row.description.length > 80 ? <span>{row.description.slice(0, 80)}... <span className="text-blue-500">Read more</span></span>
-                                                        : row.description}
-                                                </span>
-                                            </td>
-                                        </tr>
-                                    </Link>
+                                    <tr className="hover:bg-gray-100 cursor-pointer" key={row.id} onClick={() => navigateTo(row.id)}>
+                                        <th className="border-b max-h-10 truncate py-1 px-2 sticky left-0 bg-gray-50 border-r-2"><span>{row.FunctionRisk[0]?.function_id}</span></th>
+                                        <td className="border-b max-h-10 truncate py-1 px-2"><span>{row.FunctionRisk[0]?.function.name}</span></td>
+                                        <td className="border-b max-h-10 truncate py-1 px-2"><span>{row.id}</span></td>
+                                        <td className="border-b max-h-10 truncate py-1 px-2">
+                                            <span>
+                                                {row.description && row.description.length > 80 ? <span>{row.description.slice(0, 80)}... <span className="text-blue-500">Read more</span></span>
+                                                    : row.description}
+                                            </span>
+                                        </td>
+                                    </tr>
                                 );
                             })}
                         </tbody>
                     </table>
-                </ActionsLayout.Section>
-                <ActionsLayout.Side>
+                </ActionsLayoutSection>
+                <ActionsLayoutSide>
                     <div className="bg-white rounded-md p-4 min-w-full shadow-xl sticky top-10 w-[250px]">
                         <input type="text" className="border-gray-300 rounded-lg w-full" placeholder="Search risks" />
                     </div>
-                </ActionsLayout.Side>
-            </ActionsLayout.Main>
+                </ActionsLayoutSide>
+            </ActionsLayoutMain>
         </ActionsLayout>
     )
 }
