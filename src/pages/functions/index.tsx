@@ -5,7 +5,6 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { useState } from "react";
-import ShowFunctionDialog from "../../components/modals/ShowFunctionDialog";
 
 const ProcessesIndex: NextPage = () => {
     const router = useRouter();
@@ -82,7 +81,7 @@ const ProcessesIndex: NextPage = () => {
                                             </td>
                                             <td className="border-b max-h-10 truncate py-1 px-2">
                                                 <span>
-                                                    {row._count.risks} Risks
+                                                    {/* {row._count.risks} Risks */}
                                                 </span>
                                             </td>
                                         </tr>
@@ -93,7 +92,6 @@ const ProcessesIndex: NextPage = () => {
                     </div>
                 </div>
             </div>
-            {selectedFunctionId && <ShowFunctionDialog functionId={selectedFunctionId} handleClose={() => setSelectedFunctionId(undefined)} />}
         </Layout>
     )
 }

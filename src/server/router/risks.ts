@@ -1,7 +1,6 @@
 import { createRouter } from "./context";
 import z from "zod";
 import { createRiskInputSchema, riskGetAllFilterSchema } from "../../validation/risks";
-// import { registerSchema } from "../../validation/auth";
 
 export const risksRouter = createRouter()
     .query("getAll", {

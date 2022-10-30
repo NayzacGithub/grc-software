@@ -189,7 +189,7 @@ const CreateRiskPage: NextPage = () => {
                     <div className="flex gap-2">
                         {categories && categories.length > 0 && categories.split(',').map(cat => {
                             if (cat.trim() !== '') {
-                                return <div className="bg-indigo-500 text-white px-2 rounded-full py-1 font-semibold">{cat}</div>
+                                return <div key={cat} className="bg-indigo-500 text-white px-2 rounded-full py-1 font-semibold">{cat}</div>
                             }
                         })}
                     </div>

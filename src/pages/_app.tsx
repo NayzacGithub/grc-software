@@ -28,8 +28,12 @@ const MyApp: AppType<{ session: Session | null }> = ({
         }
       });
     }
-    console.log(router.asPath);
   }, [router.asPath]);
+  useEffect(() => {
+    if (getActiveTab && getActiveTab.href != router.asPath) {
+      router.push(getActiveTab.href);
+    }
+  }, [getActiveTab?.href]);
   return (
     <SessionProvider session={session}>
       <Component {...pageProps} />

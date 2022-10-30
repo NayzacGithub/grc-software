@@ -1,15 +1,10 @@
 import { useRouter } from "next/router";
 import { trpc } from "../../utils/trpc";
-import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
-import ActionsLayout from "../../components/ActionsLayout";
+import ActionsLayout, {ActionsLayoutHeader, ActionsLayoutMain, ActionsLayoutSection, ActionsLayoutSide} from "../../components/ActionsLayout";
 
 const ActionButton = () => {
-    return <DropdownMenu.Root>
-        <DropdownMenu.Trigger >
-            <button className="bg-blue-500 text-white  px-4 py-3  rounded-lg flex gap-2">Actions <ChevronDownIcon className="w-6 h-6" /></button>
-        </DropdownMenu.Trigger >
-    </DropdownMenu.Root>
+    return <button className="bg-blue-500 text-white  px-4 py-3  rounded-lg flex gap-2">Actions <ChevronDownIcon className="w-6 h-6" /></button>
 }
 
 const RiskPage = () => {
@@ -27,7 +22,7 @@ const RiskPage = () => {
 
     return (
         <ActionsLayout>
-            <ActionsLayout.Header>
+            <ActionsLayoutHeader>
                 <div className="flex flex-col ">
                     <span className="text-sm">Control</span>
                     <h1 className="text-2xl">
@@ -55,9 +50,9 @@ const RiskPage = () => {
                     </div>
                 </div>
                 <ActionButton />
-            </ActionsLayout.Header>
-            <ActionsLayout.Main>
-                <ActionsLayout.Section>
+            </ActionsLayoutHeader>
+            <ActionsLayoutMain>
+                <ActionsLayoutSection>
                     <details open className=" pb-5">
                         <summary className="text-2xl font-bold">General</summary>
                         <div className="grid gap-5">
@@ -116,8 +111,8 @@ const RiskPage = () => {
                             </table>
                         </div>
                     </details>
-                </ActionsLayout.Section>
-                <ActionsLayout.Side>
+                </ActionsLayoutSection>
+                <ActionsLayoutSide>
                     <div className="card py-3 px-5 flex flex-col gap-2">
                         <div className="grid grid-cols-3">
                             <h3 className="font-semibold">
@@ -137,8 +132,8 @@ const RiskPage = () => {
                         <p className="mb-1">Review and update the control information</p>
                         <p className="mb-1">Add, Review, Update test plans and provide Test Results.</p>
                     </div>
-                </ActionsLayout.Side>
-            </ActionsLayout.Main>
+                </ActionsLayoutSide>
+            </ActionsLayoutMain>
         </ActionsLayout>
     );
 }

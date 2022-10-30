@@ -1,9 +1,8 @@
 import { NextPage } from "next";
 import { trpc } from "../../utils/trpc";
-import ActionsLayout from "../../components/ActionsLayout";
-import { Assertion, Control, ControlCoso, ControlRACI, Function, FunctionRisk, Risk, RiskControl } from "@prisma/client";
-import { MouseEvent, MouseEventHandler, useState } from "react";
-import { InformationCircleIcon } from "@heroicons/react/24/outline";
+import ActionsLayout, { ActionsLayoutMain } from "../../components/ActionsLayout";
+import { Assertion, Control, ControlCoso, ControlRACI, FunctionRisk, Risk, RiskControl } from "@prisma/client";
+import { MouseEvent, useState } from "react";
 import clsx from "clsx";
 
 interface RCMAttributeProps {
@@ -24,35 +23,42 @@ const RCMAttribute: React.FunctionComponent<RCMAttributeProps> = ({ title, value
 type ControlType = Control & {
     Assertion: Assertion[];
     ControlRACI: ControlRACI[];
-    ControlCoso: ControlCoso[];
 };
 
 type RCM = Risk & {
     FunctionRisk: (FunctionRisk & {
-        function: Function;
+        function: {
+            id: string;
+            name: string;
+            description: string | null;
+        };
     })[];
     RiskControl: (RiskControl & {
-        control: ControlType
+        control: Control & {
+            Assertion: Assertion[];
+            ControlRACI: ControlRACI[];
+            ControlCoso: (ControlCoso)[];
+        };
     })[];
 }
 
 const RCMIndex: NextPage = () => {
     const { data: risks } = trpc.useQuery(["rcm.betaAll"]);
     const [selectedRCM, setSelectedRCM] = useState<RCM | undefined>(undefined);
-    const [selectedControl, setSelectedControl] = useState<Control & { Assertion: Assertion[], ControlRACI: ControlRACI[], ControlCoso: ControlCoso[] } | undefined>(undefined);
+    const [selectedControl, setSelectedControl] = useState<ControlType | undefined>(undefined);
     const handleSelectRCM = (_: MouseEvent<HTMLDivElement>, rcm: RCM) => {
         setSelectedControl(undefined);
         setSelectedRCM(rcm);
     }
 
-    const handleSelectControl = (_: MouseEvent<HTMLDivElement>, control: Control) => {
+    const handleSelectControl = (_: MouseEvent<HTMLDivElement>, control: ControlType) => {
         setSelectedControl(control);
     }
 
 
     return (
         <ActionsLayout>
-            <ActionsLayout.Main>
+            <ActionsLayoutMain>
                 <div className="grid grid-cols-3 gap-3">
                     <section className="bg-white rounded-lg shadow-lg p-5 h-[80vh] overflow-y-scroll">
                         <div className={"flex flex-col gap-2"}>
@@ -196,7 +202,7 @@ const RCMIndex: NextPage = () => {
                                                 <tbody>
                                                     {
                                                         selectedControl.Assertion.map((assertion) => (
-                                                            <tr>
+                                                            <tr key={assertion.id}>
                                                                 <td className="border py-1 text-center"><span className={clsx(assertion.completeness ? 'bg-green-500 text-white' : 'bg-red-500 text-white', 'text-white font-bold px-3 rounded-full pb-0.5')}>{assertion.completeness ? 'Yes' : 'No'}</span></td>
                                                                 <td className="border py-1 text-center"><span className={clsx(assertion.existence ? 'bg-green-500 text-white' : 'bg-red-400', 'text-white font-bold px-3 rounded-full pb-0.5')}>{assertion.existence ? 'Yes' : 'No'}</span></td>
                                                                 <td className="border py-1 text-center"><span className={clsx(assertion.accuracy ? 'bg-green-500 text-white' : 'bg-red-400', 'text-white font-bold px-3 rounded-full pb-0.5')}>{assertion.accuracy ? 'Yes' : 'No'}</span></td>
@@ -229,7 +235,7 @@ const RCMIndex: NextPage = () => {
                                             <tbody>
                                                 {
                                                     selectedControl.ControlRACI.map((raci) => (
-                                                        <tr>
+                                                        <tr key={raci.id}>
                                                             <td className="text-center px-1 py-1 border">{raci.responsability}</td>
                                                             <td className="text-center px-1 py-1 border">{raci.accountability}</td>
                                                             <td className="text-center px-1 py-1 border">{raci.consulted}</td>
@@ -252,7 +258,7 @@ const RCMIndex: NextPage = () => {
                     }
 
                 </div>
-            </ActionsLayout.Main>
+            </ActionsLayoutMain>
         </ActionsLayout>
     )
 }
