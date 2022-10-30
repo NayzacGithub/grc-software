@@ -28,10 +28,10 @@ const Hamburger = () => {
             <button title="Menu" onClick={handleNavToggle}>
                 <Bars3Icon className="w-6 h-6 my-auto" />
             </button>
-            {showingNav && <nav className="absolute bg-white text-black shadow-xl border-2 rounded-lg overflow-clip">
+            {showingNav && <nav className="absolute bg-white z-10 text-black shadow-xl border-2 rounded-lg overflow-clip">
                 <ul>
                     {mainNavigationLinks.map((link) => (
-                        <li className="py-2 px-4 min-w-max text-left hover:bg-slate-50 border-b" onClick={() => navigateTo(link)}><a>{link.name}</a></li>
+                        <li className="py-2 px-4 min-w-max text-left hover:bg-slate-50 border-b" onClick={() => navigateTo(link)} key={link.href}><a>{link.name}</a></li>
                     ))}
                 </ul>
             </nav>}
