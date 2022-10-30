@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { debounce, cloneDeep } from "lodash";
 import { trpc } from "../utils/trpc";
 const Searchbox = () => {
@@ -43,7 +43,7 @@ const Searchbox = () => {
                             </div>
                             <div className="flex flex-col border-b pb-5">
                                 {cloneDeep(data.functions).splice(0, 3).map((f) => {
-                                    return <Searchbox.Result query={query} key={f.id} id={f.id} name={f.name} type="functions" />
+                                    return <SearchboxResult query={query} key={f.id} id={f.id} name={f.name} type="functions" />
                                 })}
                             </div>
                         </div>}
@@ -61,7 +61,7 @@ const Searchbox = () => {
                             </div>
                             <div className="flex flex-col border-b pb-5">
                                 {cloneDeep(data.risks).splice(0, 5).map((f) => {
-                                    return <Searchbox.Result query={query} key={f.id} id={f.id} name={f.name} type="risks" />
+                                    return <SearchboxResult query={query} key={f.id} id={f.id} name={f.name} type="risks" />
                                 })}
                             </div>
                         </div>}
@@ -79,7 +79,7 @@ const Searchbox = () => {
                             </div>
                             <div className="flex flex-col border-b pb-5">
                                 {cloneDeep(data.controls).splice(0, 5).map((f) => {
-                                    return <Searchbox.Result query={query} key={f.id} id={f.id} name={f.name} type="controls" />
+                                    return <SearchboxResult query={query} key={f.id} id={f.id} name={f.name} type="controls" />
                                 })}
                             </div>
                         </div>}
@@ -100,7 +100,7 @@ interface SearchboxResultProps {
     type: ResultType
 }
 
-Searchbox.Result = ({ id, name, query, type }: SearchboxResultProps) => {
+const SearchboxResult = ({ id, name, query, type }: SearchboxResultProps) => {
     const indexOfQueryInName = name.toLowerCase().indexOf(query.toLowerCase());
     const indexOfQueryInID = id.toLowerCase().indexOf(query.toLowerCase());
     return (
@@ -118,6 +118,5 @@ Searchbox.Result = ({ id, name, query, type }: SearchboxResultProps) => {
         </Link>
     )
 }
-
 
 export default Searchbox;
