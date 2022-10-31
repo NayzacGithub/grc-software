@@ -3,6 +3,11 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
 COPY package.json yarn.lock* package-lock.json* ./
+COPY prisma ./prisma/
+COPY .env ./
+COPY tsconfig.json ./
+
+
 RUN \
     if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
     elif [ -f package-lock.json ]; then npm ci; \
