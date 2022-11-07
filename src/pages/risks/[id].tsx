@@ -5,7 +5,7 @@ import ActionsLayout, {ActionsLayoutHeader, ActionsLayoutMain, ActionsLayoutSect
 import Link from "next/link";
 
 const ActionButton = () => {
-    return <button className="bg-blue-500 text-white  px-4 py-3  rounded-lg flex gap-2">Actions <ChevronDownIcon className="w-6 h-6" /></button>
+    return <button className="bg-blue-500 text-white  px-4 py-3  rounded-lg flex gap-2 my-auto "><span className="my-auto">Start Risk Assessment</span></button>
 }
 
 const RiskPage = () => {

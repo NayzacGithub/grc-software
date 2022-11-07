@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { trpc } from "../../utils/trpc";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
-import ActionsLayout, {ActionsLayoutHeader, ActionsLayoutMain, ActionsLayoutSection, ActionsLayoutSide} from "../../components/ActionsLayout";
+import ActionsLayout, { ActionsLayoutHeader, ActionsLayoutMain, ActionsLayoutSection, ActionsLayoutSide } from "../../components/ActionsLayout";
 
 const ActionButton = () => {
     return <button className="bg-blue-500 text-white  px-4 py-3  rounded-lg flex gap-2">Actions <ChevronDownIcon className="w-6 h-6" /></button>
@@ -53,64 +53,81 @@ const RiskPage = () => {
             </ActionsLayoutHeader>
             <ActionsLayoutMain>
                 <ActionsLayoutSection>
-                    <details open className=" pb-5">
-                        <summary className="text-2xl font-bold">General</summary>
-                        <div className="grid gap-5">
-                            <div className="flex flex-col gap-1">
-                                <span className="font-bold">Control ID</span>
-                                <span>{control.id}</span>
+                    <div className="p-5">
+                        <details open className=" pb-5">
+                            <summary className="text-2xl font-bold">General</summary>
+                            <div className="grid gap-5">
+                                <div className="flex flex-col gap-1">
+                                    <span className="font-bold">Control ID</span>
+                                    <span>{control.id}</span>
+                                </div>
+                                <div className="flex flex-col gap-1">
+                                    <span className="font-bold">Control</span>
+                                    <span>{control.name}</span>
+                                </div>
+                                <div className="flex flex-col gap-1">
+                                    <span className="font-bold">Description</span>
+                                    <span className=" whitespace-pre-wrap">{control.description}</span>
+                                </div>
+                                <div className="flex flex-col gap-1">
+                                    <span className="font-bold">Owner</span>
+                                    <span>{`Nour Sofanati`}</span>
+                                </div>
                             </div>
-                            <div className="flex flex-col gap-1">
-                                <span className="font-bold">Control</span>
-                                <span>{control.name}</span>
-                            </div>
-                            <div className="flex flex-col gap-1">
-                                <span className="font-bold">Description</span>
-                                <span className=" whitespace-pre-wrap">{control.description}</span>
-                            </div>
-                            <div className="flex flex-col gap-1">
-                                <span className="font-bold">Owner</span>
-                                <span>{`Nour Sofanati`}</span>
-                            </div>
-                        </div>
-                    </details>
+                        </details>
 
-                    <details open className=" border-t-2 pb-5">
-                        <summary className="text-2xl font-bold ">Control Assessment</summary>
-                        <div className="flex justify-around pt-4">
-                            <div className="flex flex-col gap-1 justify-center items-center">
-                                <span className="font-bold">Design Effectiveness</span>
-                                {/* <span>{risk.id}</span> */}
-                                <span className="bg-green-700 text-white rounded-full px-4 pb-1 max-w-fit">{`Effective`}</span>
+                        <details open className=" border-t-2 pb-5">
+                            <summary className="text-2xl font-bold ">Control Assessment</summary>
+                            <div className="flex justify-around pt-4">
+                                {/* <div className="flex flex-col gap-1 justify-center items-center">
+                                    <span className="font-bold">Design Effectiveness</span>
+                            
+                                    <span className="bg-green-700 text-white rounded-full px-4 pb-1 max-w-fit">{`Effective`}</span>
+                                </div>
+                                <div className="flex flex-col gap-1 justify-center items-center">
+                                    <span className="font-bold">Adequacy</span>
+                                    <span className="bg-green-700 text-white rounded-full px-4 pb-1 max-w-fit">{`Adequate`}</span>
+                            
+                                </div> */}
+                                <div className="flex flex-col gap-1 justify-center items-center">
+                                    <span className="font-bold">Design Effectiveness</span>
+                                    <select name="effectiveness" id="" className="border-gray-400 border-b-green-800 min-w-[250px] border-1 border-b-4 ">
+                                        <option value="">Effective</option>
+                                        <option value="">Defective</option>
+                                    </select>
+                                </div>
+                                <div className="flex flex-col gap-1 justify-center items-center">
+                                    <span className="font-bold">Adequacy</span>
+                                    <select name="effectiveness" id="" className="border-gray-400 border-b-green-800 min-w-[250px] border-1 border-b-4 ">
+                                        <option value="">Effective</option>
+                                        <option value="">Defective</option>
+                                    </select>
+                                </div>
                             </div>
-                            <div className="flex flex-col gap-1 justify-center items-center">
-                                <span className="font-bold">Adequacy</span>
-                                <span className="bg-green-700 text-white rounded-full px-4 pb-1 max-w-fit">{`Adequate`}</span>
-                                {/* <span>{risk.id}</span> */}
-                            </div>
-                        </div>
-                    </details>
-                    <details open className=" border-t-2 pb-5">
-                        <summary className="text-2xl font-bold ">Control Issues</summary>
-                        <div>
-                            <h2 className="text-xl font-bold">Control Issues</h2>
-                            <table className="bg-white w-full table-auto border mt-3">
-                                <thead>
-                                    <tr>
-                                        <th className="bg-[#dbdbdb]/30 border-x py-4">Issue name</th>
-                                        <th className="bg-[#dbdbdb]/30 border-x py-4">Description</th>
-                                        <th className="bg-[#dbdbdb]/30 border-x py-4">Priority</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
+                            
+                        </details>
+                        <details open className=" border-t-2 pb-5">
+                            <summary className="text-2xl font-bold ">Control Issues</summary>
+                            <div>
+                                <h2 className="text-xl font-bold">Control Issues</h2>
+                                <table className="bg-white w-full table-auto border mt-3">
+                                    <thead>
+                                        <tr>
+                                            <th className="bg-[#dbdbdb]/30 border-x py-4">Issue name</th>
+                                            <th className="bg-[#dbdbdb]/30 border-x py-4">Description</th>
+                                            <th className="bg-[#dbdbdb]/30 border-x py-4">Priority</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
 
-                                    <tr>
-                                        <td className="text-center py-5 border-x" colSpan={3}>No Results</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </details>
+                                        <tr>
+                                            <td className="text-center py-5 border-x" colSpan={3}>No Results</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </details>
+                    </div>
                 </ActionsLayoutSection>
                 <ActionsLayoutSide>
                     <div className="card py-3 px-5 flex flex-col gap-2">

@@ -4,7 +4,6 @@ WORKDIR /app
 
 COPY package.json yarn.lock* package-lock.json* ./
 COPY prisma ./prisma/
-COPY .env ./
 COPY tsconfig.json ./
 
 
@@ -20,7 +19,13 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+
+ARG DATABASE_URL
+ARG NEXTAUTH_SECRET
+ARG NEXTAUTH_URL
+
 RUN npm run build
+
 
 
 FROM node:16-alpine AS runner
@@ -30,6 +35,7 @@ ENV NODE_ENV production
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
+
 
 COPY --from=builder /app/public ./public
 
@@ -42,4 +48,8 @@ EXPOSE 3000
 
 ENV PORT 3000
 
-CMD ["node", "server.js"]
+ARG DATABASE_URL
+ARG NEXTAUTH_SECRET
+ARG NEXTAUTH_URL
+
+CMD ["node", "server.js"] 

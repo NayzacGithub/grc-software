@@ -1,0 +1,54 @@
+version: '3.9'
+services:
+  database:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: test
+      MYSQL_USER: test
+      MYSQL_PASSWORD: test
+    ports:
+      - "3306:3306"
+    networks:
+      - shared-network
+    volumes:
+      - ./data:/var/lib/mysql
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      PMA_HOST: database
+      PMA_PORT: 3306
+      PMA_USER: test
+      PMA_PASSWORD: test
+    ports:
+      - "8080:80"
+    restart: always
+    depends_on:
+      - database
+    networks:
+      - shared-network
+  pianat:
+    container_name: pianat
+    image: pianat:1.0.2
+    environment:
+      - DATABASE_URL=mysql://test:test@database:3306/test
+      - NEXTAUTH_SECRET=secret
+      - NEXTAUTH_URL=http://localhost:3000
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        DATABASE_URL: mysql://test:test@database:3306/test
+        NEXTAUTH_SECRET: secret
+        NEXTAUTH_URL: http://localhost:3000
+    ports:
+      - "80:3000"
+    networks:
+      - shared-network
+    depends_on:
+      - database
+
+networks:
+  shared-network:
+
+
