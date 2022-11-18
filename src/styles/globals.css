@@ -26,6 +26,15 @@
 .radix-tab-active {
     @apply bg-white p-4 border-l border-gray-300 border-t-4 border-t-blue-400;
 }
+
+.pFormInput {
+    @apply border-gray-400 border-b-green-800 min-w-[250px] border-b-4;
+}
+
+.pFormInput[disabled] {
+    @apply border-gray-400 border-b-gray-400;
+}
+
 body{
     background: #eef0f4;
 }

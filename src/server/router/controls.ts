@@ -14,7 +14,15 @@ export const controlsRouter = createRouter()
                 include: {
                     RiskControl: {
                         include: {
-                            risk: true
+                            risk: {
+                                include: {
+                                    FunctionRisk: {
+                                        include: {
+                                            function: true
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 },

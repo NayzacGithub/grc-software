@@ -214,3 +214,9 @@ model UserRole {
 
     @@unique([userId, roleId])
 }
+
+model Process {
+    id          String  @id
+    name        String
+    description String? @db.Text
+}

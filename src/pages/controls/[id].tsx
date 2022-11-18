@@ -79,16 +79,6 @@ const RiskPage = () => {
                         <details open className=" border-t-2 pb-5">
                             <summary className="text-2xl font-bold ">Control Assessment</summary>
                             <div className="flex justify-around pt-4">
-                                {/* <div className="flex flex-col gap-1 justify-center items-center">
-                                    <span className="font-bold">Design Effectiveness</span>
-                            
-                                    <span className="bg-green-700 text-white rounded-full px-4 pb-1 max-w-fit">{`Effective`}</span>
-                                </div>
-                                <div className="flex flex-col gap-1 justify-center items-center">
-                                    <span className="font-bold">Adequacy</span>
-                                    <span className="bg-green-700 text-white rounded-full px-4 pb-1 max-w-fit">{`Adequate`}</span>
-                            
-                                </div> */}
                                 <div className="flex flex-col gap-1 justify-center items-center">
                                     <span className="font-bold">Design Effectiveness</span>
                                     <select name="effectiveness" id="" className="border-gray-400 border-b-green-800 min-w-[250px] border-1 border-b-4 ">
@@ -148,7 +138,7 @@ const RiskPage = () => {
                         <h2 className="font-bold mb-2">Control Assessment</h2>
                         <p className="mb-1">Review and update the control information</p>
                         <p className="mb-1">Add, Review, Update test plans and provide Test Results.</p>
-                    </div>
+                    </div>  
                 </ActionsLayoutSide>
             </ActionsLayoutMain>
         </ActionsLayout>

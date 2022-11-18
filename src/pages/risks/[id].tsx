@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { trpc } from "../../utils/trpc";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
-import ActionsLayout, {ActionsLayoutHeader, ActionsLayoutMain, ActionsLayoutSection, ActionsLayoutSide} from "../../components/ActionsLayout";
+import ActionsLayout, { ActionsLayoutHeader, ActionsLayoutMain, ActionsLayoutSection, ActionsLayoutSide } from "../../components/ActionsLayout";
 import Link from "next/link";
 
 const ActionButton = () => {
@@ -178,6 +178,34 @@ const RiskPage = () => {
                             <li className=" list-item">The risk should be assessed in the context of the organisation’s risk appetite and tolerance;</li>
                         </ul>
                     </div>
+                    {risk?.id == "GBCWCGW001" && <div className="bg-white border-teal-600 border-2 py-3 px-5">
+                        <h2 className="font-bold mb-2">Risk Jobs</h2>
+                        <ul className="flex flex-col gap-2 mt-2">
+                            <div className="border p-2 flex">
+                                <div>
+                                    <h3 className="font-semibold">Risk Assessment #1</h3>
+                                    <p>Due in 14 hours</p>
+                                </div>
+                                <div className="ml-auto my-auto text-green-600">
+                                    Current job
+                                </div>
+                            </div>
+                        </ul>
+                    </div>}
+                    {risk?.id == "GBCWCGW002" && <div className="bg-white border-teal-600 border-2 py-3 px-5">
+                        <h2 className="font-bold mb-2">Risk Jobs</h2>
+                        <ul className="flex flex-col gap-2 mt-2">
+                            <div className="border p-2 flex">
+                                <div>
+                                    <h3 className="font-semibold">Risk Assessment #2</h3>
+                                    <p>Due in 3 days and 2 hours</p>
+                                </div>
+                                <div className="ml-auto my-auto text-green-600">
+                                    Current job
+                                </div>
+                            </div>
+                        </ul>
+                    </div>}
                 </ActionsLayoutSide>
             </ActionsLayoutMain>
         </ActionsLayout>
